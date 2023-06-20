@@ -18,7 +18,7 @@
     [2,2]
 ]
 
-这个问题乍一看很简单,当长度固定时(例子中为2)只需要这样写即可(python)
+当长度固定时(例子中为2)只需要这样写即可(python)
 def Enumerator2(arr):
     #长度是多少就写几层循环,这里是2层
     for a in arr:
@@ -27,7 +27,7 @@ def Enumerator2(arr):
 for a in Enumerator2([0,1,2]):print(a)
 
 但是如果长度不固定,就需要用递归才能比较简单
-这个库就是用更加高效的循环来解决这个问题
+这个函数用更加高效的循环来解决这个问题
 它可以用于穷举密码
 参数示意(3长度):
 _arr=[0,  1,  2,  3]
@@ -37,7 +37,6 @@ _buf=[None, None, None]#不需要初始化,由函数填充
      buf               eob
 */
 
-#include <stdint.h>
 //枚举器的回调函数类型,没有任何输入输出(因为缓冲区和长度由调用者提供),每完成一次枚举就会调用它
 typedef void CALLBACK(void);
 //枚举函数
@@ -59,6 +58,8 @@ void Enumerator(
     void **now_buf;
     void ***now_idx;
     //索引列表,储存了buf每个元素对应的arr索引
+    //_idx=[&_arr[0], &_arr[0], &_arr[0]]#和buf长度一样
+    //     idx                        eoi
     void **idx[eob-buf];
     //索引列表的终止指针(包括)
     void ***eoi=idx+(eob-buf-1);

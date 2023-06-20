@@ -1,18 +1,20 @@
 #include "enumerator.h"
 #include <windows.h>
 #define CHAR_SET "0123456789"
-HANDLE stdo;
-COORD x0y0={0,0};
-DWORD temp;
-CreateEnumeratorFunction(EnumChar,char,WriteConsoleOutputCharacterA(stdo,buf,10,x0y0,&temp););
+#define BUF_SIZE (5)
+CreateEnumeratorFunction(
+    EnumChar,
+    char,
+    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE),buf,BUF_SIZE+1,0,0)
+);
 void Main(void){
-    stdo=CreateFileA("CONOUT$",GENERIC_WRITE,FILE_SHARE_WRITE,0,OPEN_EXISTING,0,0);
-    if(stdo!=INVALID_HANDLE_VALUE){
-        char arr[]=CHAR_SET;
-        char *eoa=arr+(sizeof(CHAR_SET)-1);
-        char buf[11];
-        buf[10]='\n';
-        char *eob=buf+10;
-        EnumChar(arr,eoa,buf,eob);
-    }
+    char arr[]=CHAR_SET;
+    char buf[BUF_SIZE+1];//最后放一个换行符
+    buf[BUF_SIZE]='\n';
+    EnumChar(
+        arr,
+        arr+(sizeof(CHAR_SET)-1),
+        buf,
+        buf+BUF_SIZE//换行符不包括在Enum函数的buf里
+    );
 }
